@@ -20,11 +20,12 @@ const useStyle = makeStyles({
 
 const Todos = () => {
     const classes = useStyle();
-    // Type
+    // State Type
     interface TodoType {
         id: number,
         text: string
     };
+    // Action Type
     type ActionType = { type: 'ADD'; text: string } | { type: 'REMOVE'; id: number };
     // Todo Reducer
     const reducer = (state: TodoType[], action: ActionType) => {
@@ -52,12 +53,11 @@ const Todos = () => {
                 type: 'ADD',
                 text: newTodoRef.current.value
             });
-            localStorage.setItem('todos', newTodoRef.current.value)
+            // localStorage.setItem('todo', todos);
         }
     };
 
-    console.log(todos)
-
+    // console.log(todos.length)
     return (
         <Box component="section" sx={{ py: 8 }}>
             <Typography
@@ -72,7 +72,6 @@ const Todos = () => {
                     className={classes.root}
                     sx={{ background: '#fff', borderRadius: '5px', width: '30%' }}
                     inputRef={newTodoRef}
-
                 />
 
                 <Button
@@ -83,7 +82,26 @@ const Todos = () => {
                 >Add</Button>
             </Box>
 
-            <Todo />
+            {/* Display Todos */}
+            {
+                todos.length > 0 && <Box sx={{ background: '#fff', width: '33%', p: 3, my: 3, mx: 'auto', borderRadius: 1 }}>
+                    {
+                        todos.map(todo => <Box>
+                            <Typography
+                                variant="h5"
+                                sx={{ borderBottom: 1, borderColor: '#D5D5D6', color: '#2174D3', fontSize: '1rem', fontWeight: 600, py: 1 }}
+                            >
+                                {todo.text}
+                                <Button
+                                    sx={{ color: '#F74539' }}
+                                    onClick={() => dispatch({ type: 'REMOVE', id: todo.id })}
+                                >X</Button>
+                            </Typography>
+
+                        </Box>)
+                    }
+                </Box>
+            }
         </Box>
     );
 };
